@@ -1,0 +1,22 @@
+In master take c:\Windows\.erlang.cookie and copy and replace it to:
+-Master c:\Users\InstallerUser\.erlang.cookie
+-Slaves c:\Windows\.erlang.cookie and c:\Users\InstallerUser\.erlang.cookie
+
+Restart master´s RabbitMQ
+Stop slaves RabbitMQ
+
+From slaves run RabbitMQ command prompt as admin as:
+cd C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.10\sbin
+rabbitmqctl stop_app
+rabbitmqctl join_cluster rabbit@COMPUTER_CLUSTER_NAME
+
+Restart master´s RabbitMQ
+Restart slaves´ RabbitMQ
+
+Verify with rabbitmqctl cluster_status
+
+Setup all queues starting with "consumer" to be replicated
+rabbitmqctl set_policy ha-all "^consumer" "{""ha-mode"":""all""}"
+
+Stop the service in COMPUTER_CLUSTER_NAME
+Run the demo
